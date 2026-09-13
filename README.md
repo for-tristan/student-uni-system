@@ -8,9 +8,7 @@
 | AI                 | **Python + Hugging Face + Ollama** | 2 AI        |
 | UI/UX              | **Figma Free**                     | UI/UX       |
 | Version control    | **Git + GitHub Free**              | Everyone    |
-| API testing        | **Postman / Insomnia**             | Everyone    |
 | Code editor        | **VS Code**                        | Everyone    |
-| Containers         | **Docker**                         | Backend/AI  |
 | Documentation      | **GitHub Wiki/Markdown**           | Everyone    |
 | Project management | **GitHub Projects**                | You         |
 
