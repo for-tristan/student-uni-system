@@ -245,7 +245,7 @@ Merge
 
 
 
-# Your final stack
+# stack
 
 
 ```text
