@@ -4,7 +4,7 @@
 | Mobile             | **Flutter**                 | 2 Flutter   |
 | Web                | **React + TypeScript**             | 2 Frontend  |
 | Backend            | **FastAPI + Python**               | Full-stack  |
-| Database           | **PostgreSQL / Supabase**          | Full-stack  |
+| Database           | **PostgreSQL / turso sql**          | Full-stack  |
 | AI                 | **Python + Hugging Face + Ollama** | 2 AI        |
 | UI/UX              | **Figma Free**                     | UI/UX       |
 | Version control    | **Git + GitHub Free**              | Everyone    |
@@ -14,9 +14,7 @@
 | Documentation      | **GitHub Wiki/Markdown**           | Everyone    |
 | Project management | **GitHub Projects**                | You         |
 
-Flutter itself is free and open source. ([Flutter Documentation][1]) GitHub Free supports unlimited public/private repositories and collaborators, although some advanced features for private repositories require paid plans. ([GitHub][2])
 
-Supabase's free tier currently includes PostgreSQL, 500 MB database storage, and 1 GB file storage, which is more than enough for this **practice project**. ([Supabase][3])
 
 ---
 
