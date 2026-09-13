@@ -1,12 +1,7 @@
-Yes. If the requirement is **$0 cost for the entire team**, I would actually simplify the stack quite a bit.
-
-Given your 8-person team, I recommend this stack:
-
-## Recommended $0 stack
 
 | Area               | Technology                         | Who uses it |
 | ------------------ | ---------------------------------- | ----------- |
-| Mobile             | **Flutter + Dart**                 | 2 Flutter   |
+| Mobile             | **Flutter**                 | 2 Flutter   |
 | Web                | **React + TypeScript**             | 2 Frontend  |
 | Backend            | **FastAPI + Python**               | Full-stack  |
 | Database           | **PostgreSQL / Supabase**          | Full-stack  |
@@ -29,7 +24,7 @@ Supabase's free tier currently includes PostgreSQL, 500 MB database storage, and
 
 Your two Flutter developers should use:
 
-**Flutter + Dart**
+**Flutter**
 
 [Flutter Documentation](https://docs.flutter.dev/?utm_source=chatgpt.com)
 
