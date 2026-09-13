@@ -268,7 +268,7 @@ Backend
 
 Database
 - PostgreSQL
-- Supabase
+- turso
 
 AI
 - Python
