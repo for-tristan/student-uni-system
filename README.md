@@ -284,3 +284,19 @@ Development
 - GitHub
 
 ```
+
+
+
+
+
+
+
+
+git add .
+git add 
+git commit -m
+git push
+git push -u origin main
+git init -b main
+git remote add origin 
+git checkout -b 
