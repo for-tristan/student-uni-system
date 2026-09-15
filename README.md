@@ -10,7 +10,6 @@
 | Version control    | **Git + GitHub Free**              | Everyone    |
 | Code editor        | **VS Code**                        | Everyone    |
 | Documentation      | **GitHub Wiki/Markdown**           | Everyone    |
-| Project management | **GitHub Projects**                | You         |
 
 
 
