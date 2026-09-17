@@ -1,0 +1,16 @@
+# University Course Recommendation System
+#
+# Runtime / ML stack
+numpy>=1.26,<2.3
+pandas>=2.1,<2.3
+scikit-learn>=1.4,<1.6
+
+# API
+fastapi>=0.110,<0.116
+uvicorn[standard]>=0.27,<0.32
+
+# Notebook
+jupyter>=1.0,<2.0
+
+# Testing
+pytest>=8.0,<9.0
