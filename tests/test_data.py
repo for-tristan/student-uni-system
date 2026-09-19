@@ -1,18 +1,3 @@
-"""Validate the synthetic recommendation dataset.
-
-These tests ensure that:
-- All three CSV files exist and load with pandas.
-- Required columns are present and non-empty (where applicable).
-- Student IDs, course IDs, and enrollment references are consistent.
-- Prerequisites reference existing course IDs and form a DAG (no cycles).
-- Enrollment statuses are from the allowed set.
-- Grades are sensible (0–100 or empty for in-progress/dropped).
-- No duplicate (student_id, course_id) enrollment pairs.
-
-Run with:
-    pytest tests/test_data.py -v
-"""
-
 from __future__ import annotations
 
 from pathlib import Path
