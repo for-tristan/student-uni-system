@@ -5,11 +5,9 @@ import random
 from pathlib import Path
 from typing import Dict, List
 
-# --- Determinism -----------------------------------------------------------
 RANDOM_SEED = 42
 random.seed(RANDOM_SEED)
 
-# --- Paths -----------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -18,16 +16,7 @@ STUDENTS_CSV = DATA_DIR / "students.csv"
 COURSES_CSV = DATA_DIR / "courses.csv"
 ENROLLMENTS_CSV = DATA_DIR / "enrollments.csv"
 
-
-# ===========================================================================
-# COURSE CATALOG
-# ===========================================================================
-# Each course dict: name, category, description, skills, prerequisites,
-# difficulty, credits. Prerequisites reference course NAMES (resolved to
-# course_id after catalog is built) to keep the taxonomy human-readable.
-# ---------------------------------------------------------------------------
 COURSE_CATALOG: List[Dict] = [
-    # --- AI (5 courses) -----------------------------------------------------
     {"name": "Introduction to Artificial Intelligence",
      "category": "AI",
      "description": "Overview of AI: search, knowledge representation, reasoning, and agents.",
@@ -59,7 +48,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Machine Learning"],
      "difficulty": "Advanced", "credits": 3},
 
-    # --- Data Science (5 courses) -----------------------------------------
     {"name": "Statistics for Data Science",
      "category": "Data Science",
      "description": "Descriptive and inferential statistics for data analysis.",
@@ -91,7 +79,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Statistics for Data Science"],
      "difficulty": "Intermediate", "credits": 3},
 
-    # --- Web (5 courses) ---------------------------------------------------
     {"name": "Web Development Fundamentals",
      "category": "Web",
      "description": "HTML, CSS, and modern web page structure and styling.",
@@ -123,7 +110,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Backend Development"],
      "difficulty": "Advanced", "credits": 3},
 
-    # --- Cybersecurity (5 courses) -----------------------------------------
     {"name": "Introduction to Cybersecurity",
      "category": "Cybersecurity",
      "description": "Core security principles, threats, vulnerabilities, and defense strategies.",
@@ -155,7 +141,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Introduction to Cybersecurity"],
      "difficulty": "Advanced", "credits": 3},
 
-    # --- Software Engineering (5 courses) ----------------------------------
     {"name": "Programming Fundamentals",
      "category": "Software Engineering",
      "description": "Introduction to programming with Python: variables, control flow, functions.",
@@ -187,7 +172,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Algorithms", "Network Fundamentals"],
      "difficulty": "Advanced", "credits": 4},
 
-    # --- Math & Foundations (5 courses) ------------------------------------
     {"name": "Calculus I",
      "category": "Mathematics",
      "description": "Limits, derivatives, and applications of differentiation.",
@@ -219,7 +203,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Linear Algebra", "Calculus I"],
      "difficulty": "Intermediate", "credits": 3},
 
-    # --- Mobile (3 courses) ------------------------------------------------
     {"name": "Mobile App Development",
      "category": "Mobile",
      "description": "Building mobile applications for Android and iOS platforms.",
@@ -239,7 +222,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Mobile App Development"],
      "difficulty": "Advanced", "credits": 3},
 
-    # --- Systems (3 courses) -----------------------------------------------
     {"name": "Operating Systems",
      "category": "Systems",
      "description": "Processes, threads, memory management, file systems, and scheduling.",
@@ -259,7 +241,6 @@ COURSE_CATALOG: List[Dict] = [
      "prerequisites": ["Algorithms"],
      "difficulty": "Advanced", "credits": 4},
 
-    # --- Theory (4 courses) ------------------------------------------------
     {"name": "Theory of Computation",
      "category": "Theory",
      "description": "Automata, formal languages, and computability.",
@@ -286,12 +267,6 @@ COURSE_CATALOG: List[Dict] = [
      "difficulty": "Advanced", "credits": 4},
 ]
 
-
-# ===========================================================================
-# STUDENT POOL
-# ===========================================================================
-# Predefined profiles give realistic interest/skill/major combinations.
-# ---------------------------------------------------------------------------
 STUDENT_PROFILES: List[Dict] = [
     {"name": "Aisha", "year": 3, "major": "Computer Science",
      "interests": ["AI", "Machine Learning", "Data Science"],
@@ -370,17 +345,10 @@ STUDENT_PROFILES: List[Dict] = [
      "skills": ["Python", "Mathematics"]},
 ]
 
-
-# ===========================================================================
-# GENERATION
-# ===========================================================================
 def _join(items: List[str]) -> str:
-    """Join a list of tags into a single CSV cell string."""
     return ",".join(items) if items else ""
 
-
 def write_courses() -> Dict[str, int]:
-    """Write ``courses.csv`` and return a name→course_id lookup table."""
     name_to_id: Dict[str, int] = {}
     rows: List[Dict] = []
 
@@ -392,12 +360,11 @@ def write_courses() -> Dict[str, int]:
             "category": course["category"],
             "description": course["description"],
             "skills": _join(course["skills"]),
-            "prerequisites": _join(course["prerequisites"]),  # names, resolved below
+            "prerequisites": _join(course["prerequisites"]),
             "difficulty": course["difficulty"],
             "credits": course["credits"],
         })
 
-    # Resolve prerequisite names to comma-separated course IDs.
     for row in rows:
         if not row["prerequisites"]:
             continue
@@ -412,9 +379,7 @@ def write_courses() -> Dict[str, int]:
     print(f"  courses.csv     → {len(rows)} courses")
     return name_to_id
 
-
 def write_students() -> None:
-    """Write ``students.csv`` from STUDENT_PROFILES."""
     rows: List[Dict] = []
     for sid, profile in enumerate(STUDENT_PROFILES, start=1):
         rows.append({
@@ -430,9 +395,7 @@ def write_students() -> None:
     ])
     print(f"  students.csv    → {len(rows)} students")
 
-
 def write_enrollments(name_to_id: Dict[str, int]) -> None:
-    """Write ``enrollments.csv`` with realistic, prerequisite-aware statuses."""
     course_by_id: Dict[int, Dict] = {}
     for course in COURSE_CATALOG:
         cid = name_to_id[course["name"]]
@@ -453,7 +416,6 @@ def write_enrollments(name_to_id: Dict[str, int]) -> None:
         skills = set(profile["skills"])
         interests = set(profile["interests"])
 
-        # Score every course for this student to drive enrollment decisions.
         scored: List[tuple] = []
         for cid, course in course_by_id.items():
             course_skills = set()
@@ -495,8 +457,6 @@ def write_enrollments(name_to_id: Dict[str, int]) -> None:
             course = course_by_id[cid]
             prereqs = course["prerequisite_ids"]
 
-            # Enroll in prerequisites first (one level deep — our catalog
-            # only has 1–2 levels of prereqs).
             for pid in prereqs:
                 if pid not in completed_by_student and pid not in added_courses:
                     if random.random() < 0.85:
@@ -530,7 +490,7 @@ def write_enrollments(name_to_id: Dict[str, int]) -> None:
                 status_choice = random.choices(
                     ["completed", "in_progress", "failed", "dropped"],
                     weights=[0.30, 0.50, 0.10, 0.10])[0]
-            else:  # year 1
+            else:
                 status_choice = random.choices(
                     ["in_progress", "completed", "dropped"],
                     weights=[0.70, 0.20, 0.10])[0]
@@ -551,27 +511,18 @@ def write_enrollments(name_to_id: Dict[str, int]) -> None:
     ])
     print(f"  enrollments.csv → {len(rows)} enrollment records")
 
-
-# ===========================================================================
-# CSV HELPERS
-# ===========================================================================
 def _write_csv(path: Path, rows: List[Dict], fieldnames: List[str]) -> None:
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 
-
-# ===========================================================================
-# MAIN
-# ===========================================================================
 def main() -> None:
     print(f"Generating synthetic dataset into: {DATA_DIR}")
     write_students()
     name_to_id = write_courses()
     write_enrollments(name_to_id)
     print("Done.")
-
 
 if __name__ == "__main__":
     main()
