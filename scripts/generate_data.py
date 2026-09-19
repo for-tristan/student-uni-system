@@ -1,26 +1,3 @@
-"""Generate a synthetic university recommendation dataset.
-
-Produces three CSV files under ``data/``:
-
-* ``students.csv``     — 25 students
-* ``courses.csv``       — 40 courses (8 categories)
-* ``enrollments.csv``   — ~150 enrollment records with realistic statuses
-
-The generator is fully deterministic (fixed ``RANDOM_SEED``) so the same
-dataset is produced on every run, which keeps evaluation reproducible.
-
-Course taxonomy
----------------
-Courses are organised into 8 thematic categories. Within each category
-the courses are ordered from introductory → advanced, and advanced courses
-declare prerequisites from the same (or related) category so that the
-prerequisite graph is acyclic and sensible.
-
-Usage
------
-    python scripts/generate_data.py
-"""
-
 from __future__ import annotations
 
 import csv
