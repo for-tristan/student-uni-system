@@ -1,7 +1,3 @@
-// ============================================================
-// Smart University Assistant — shared mock academic data
-// Realistic, restrained, no marketing fluff.
-// ============================================================
 
 export type Difficulty = "Introductory" | "Intermediate" | "Advanced";
 
