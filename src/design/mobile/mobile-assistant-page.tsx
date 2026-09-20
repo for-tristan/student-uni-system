@@ -26,9 +26,7 @@ export function MobileAssistantPage() {
         </div>
         <h1 className="text-[26px] font-semibold tracking-[-0.01em]">Assistant</h1>
         <p className="text-[14px] text-muted-foreground mt-2 max-w-2xl leading-relaxed">
-          A university assistant, not a generic chatbot. Designed around useful academic
-          questions: prerequisites, next-semester options, transcript lookups, course
-          explanations. No robot avatars, no AI sparkles.
+          A university assistant
         </p>
       </section>
 
