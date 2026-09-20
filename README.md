@@ -1,11 +1,3 @@
-# Smart University Assistant — Web (React + TypeScript)
-
-The complete web design system: Foundations, Components, Mobile mockups (rendered in browser frames), and the University staff platform (Overview, Students, Courses, Recommendations, Assistant).
-
-## Visual identity
-
-Restrained academic palette — neutral foundation, single #315CFF accent used sparingly, no gradients, no glow, no glassmorphism.
-
 - Background: #F7F7F5
 - Surface: #FFFFFF
 - Border: #E4E4E1
@@ -52,29 +44,3 @@ src/
       web-admin-page.tsx              # 7 admin views
       responsive-page.tsx             # 1440 / 1024 / 768 / 390 demo
 ```
-
-## Setup
-
-```bash
-bun install      # or npm install / pnpm install
-bun run dev      # http://localhost:3000
-```
-
-## What's inside
-
-8 design pages accessible via the top navigation:
-
-1. **Foundations** — color tokens, type scale, spacing, iconography, layout principles
-2. **Components** — button/input/badge/tabs/table/pagination/toast/modal/drawer/navigation with states
-3. **Mobile — Authentication** — 4 login states (default, focus, error, loading)
-4. **Mobile — Student** — Home, Courses, Course details, Recommendations, Progress, Profile + loading/empty/error/offline
-5. **Mobile — Assistant** — empty / conversation / course-reference states
-6. **Web — Admin** — Overview, Students, Student details, Courses, Course details, Recommendations, Assistant (switchable via sub-tabs)
-7. **Web — Assistant** — conversation list | conversation layout
-8. **Responsive** — Students table at 1440 / 1024 / 768 px + behavior matrix + Flutter/React handoff notes
-
-## Customizing
-
-- Replace `src/design/data/mock.ts` with real data (or wire to Prisma + your API).
-- The accent color lives in `src/app/globals.css` — change `--primary` and everything updates.
-- Mobile screens are rendered inside an iPhone-shaped frame (`PhoneFrame`). To convert them to a real Flutter app, download the Mobile (Flutter) bundle.
