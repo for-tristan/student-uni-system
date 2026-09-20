@@ -1,5 +1,13 @@
-node_modules
-.next
-*.log
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.packages
+.pub-cache/
+.pub/
+.idea/
+.vscode/
+*.iml
 .DS_Store
-.env*.local
+ios/Pods/
+android/.gradle/
