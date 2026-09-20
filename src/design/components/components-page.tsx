@@ -22,8 +22,7 @@ export function ComponentsPage() {
         </div>
         <h1 className="text-[26px] font-semibold tracking-[-0.01em]">Components</h1>
         <p className="text-[14px] text-muted-foreground mt-2 max-w-2xl leading-relaxed">
-          A small, opinionated set. Each component has meaningful states. No decoration
-          without purpose. Built to map cleanly to Flutter widgets and React primitives.
+        
         </p>
       </section>
 
