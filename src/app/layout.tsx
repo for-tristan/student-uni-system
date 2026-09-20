@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Smart University Assistant — Design System",
+  title: "Smart University System",
   description:
     "Mobile (Flutter) and Web (React + TypeScript) design for a real university product.",
   icons: { icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg" },
