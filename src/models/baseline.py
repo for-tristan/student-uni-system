@@ -13,6 +13,7 @@ from src.data.preprocessing import (
     parse_prerequisites,
     parse_tags,
 )
+from src.models.explanations import build_explanations
 
 WEIGHT_INTEREST = 0.30
 WEIGHT_SKILL = 0.30
@@ -91,36 +92,6 @@ def difficulty_fit_score(student_year: int, course_row: pd.Series) -> float:
     return table.get(difficulty, 0.5)
 
 
-def build_reasons(
-    student_interests: List[str],
-    student_skills: List[str],
-    course_row: pd.Series,
-    completed_ids: Set[int],
-    components: Dict[str, float],
-) -> List[str]:
-    reasons: List[str] = []
-
-    course_skills_lower = {s.lower() for s in parse_tags(course_row.get("skills", ""))}
-    for interest in student_interests:
-        course_tags = {str(course_row.get("category", "")).lower()}
-        course_tags.update(parse_tags(course_row.get("skills", "")))
-        course_tags_lower = {t.lower() for t in course_tags if t}
-        if interest.lower() in course_tags_lower:
-            reasons.append(f"Matches your {interest} interest")
-
-    for skill in student_skills:
-        if skill.lower() in course_skills_lower:
-            reasons.append(f"Matches your {skill} skill")
-
-    prereqs = parse_prerequisites(course_row.get("prerequisites", ""))
-    if prereqs and components.get("prerequisite", 0.0) >= 1.0:
-        reasons.append("Prerequisites completed")
-    elif not prereqs:
-        reasons.append("No prerequisites required")
-
-    return reasons
-
-
 def score_course(
     course_row: pd.Series,
     profile: Dict,
@@ -153,7 +124,7 @@ def score_course(
         + WEIGHT_DIFFICULTY * d_score
     )
 
-    reasons = build_reasons(interests, skills, course_row, completed_ids, components)
+    reasons = build_explanations(profile, course_row, completed_ids, max_reasons=5)
 
     return Recommendation(
         course_id=int(course_row["course_id"]),

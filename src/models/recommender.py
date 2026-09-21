@@ -165,20 +165,10 @@ class TfidfCourseRecommender:
         completed_ids: Set[int],
         similarity: float,
     ) -> List[str]:
-        from src.models.baseline import build_reasons as _rule_reasons
-        return _rule_reasons(
-            profile.get("interests", []),
-            profile.get("skills_with_history", profile.get("skills", [])),
-            course_row,
-            completed_ids,
-            {"prerequisite": 1.0 if not _has_unsatisfied_prereqs(course_row, completed_ids) else 0.0},
+        from src.models.explanations import build_explanations
+        return build_explanations(
+            profile, course_row, completed_ids, similarity=similarity, max_reasons=5
         )
-
-
-def _has_unsatisfied_prereqs(course_row: pd.Series, completed_ids: Set[int]) -> bool:
-    from src.data.preprocessing import parse_prerequisites
-    prereqs = parse_prerequisites(course_row.get("prerequisites", ""))
-    return any(p not in completed_ids for p in prereqs)
 
 
 def recommend_courses(
