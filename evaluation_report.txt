@@ -1,0 +1,33 @@
+============================================================
+Recommendation System Evaluation Report
+============================================================
+
+Dataset:
+  Students:     25
+  Courses:      40
+  Enrollments:  149
+
+Methodology:
+  Hide ratio:        30% of completed courses hidden
+  Seed:              42
+  K values:          [5, 10]
+  Evaluated students: 22
+
+------------------------------------------------------------
+Metric                      Baseline       TF-IDF ML
+------------------------------------------------------------
+precision@5                   0.1455          0.1455
+recall@5                      0.6818          0.6818
+precision@10                  0.0773          0.0773
+recall@10                     0.7273          0.7273
+map                           0.5141          0.6111
+------------------------------------------------------------
+
+Limitations:
+  - Synthetic dataset with 25 students may produce noisy metrics.
+  - Hide-ratio methodology biases toward courses the student already
+    completed, which may not represent true future interests.
+  - Recall is bounded by the number of hidden courses per student.
+  - Precision@K can be 0 for students whose hidden courses are not
+    recommendable due to prerequisite chains.
+============================================================
