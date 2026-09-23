@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - Admin Dashboard</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+
+        /* Tabs & Controls */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: #e2e8f0;
+            padding: 15px
+            border-radius: 15px
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tab-btn.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            width: 300px;
+            outline: none;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-edit {
+            background-color: #fef3c7;
+            color: #b45309;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.8rem;
+            border-radius: 0.25rem;
+        }
+
+        .btn-delete {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.8rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Tables */
+        .table-container {
+            background:white
+            border-radius: 6px
+
+            border: 1px solid #e2e8f0-;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Modal UI for Add/Edit */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .modal-header {
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #4f46e5
+            border-radius: 0.375rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>لوحة تحكم الأدمن (Admin Dashboard)</h1>
+        </header>
+
+        <!-- Stats Grid Dashboard -->
+        <section class="stats-grid">
+            <div class="card">
+                <div class="card-title">عدد الطلاب</div>
+                <div class="card-value" id="total-students">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">عدد الكورسات</div>
+                <div class="card-value" id="total-courses">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">عدد الدكاترة</div>
+                <div class="card-value" id="total-doctors">12</div>
+            </div>
+            <div class="card">
+                <div class="card-title">الـ Active Users</div>
+                <div class="card-value" id="total-active">0</div>
+            </div>
+        </section>
+
+        <!-- Controls Bar: Tabs, Search & Add UI -->
+        <div class="controls-bar">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('students')">جدول الطلاب (Students)</button>
+                <button class="tab-btn" onclick="switchTab('courses')">جدول المواد (Courses)</button>
+            </div>
+            
+            <input type="text" id="searchInput" class="search-box" placeholder="بحث بالاسم أو الكود..." onkeyup="filterData()">
+
+            <button class="btn btn-primary" onclick="openModal('add')">+ إضافة جديد</button>
+        </div>
+
+        <!-- Dynamic Table -->
+        <section class="table-container">
+            <table>
+                <thead id="table-head"></thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- UI Modal for Add/Edit -->
+    <div class="modal" id="dataModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalTitle">إضافة جديد</div>
+            <div id="modalInputs"></div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveItem()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'students';
+        let studentsData = [];
+        let coursesData = [];
+        let activeEditIndex = null;
+
+        async function fetchCSV(filename) {
+            try {
+                const response = await fetch(filename);
+                if (!response.ok) return [];
+                const data = await response.text();
+                return parseCSV(data);
+            } catch {
+                return [];
+            }
+        }
+
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if(lines.length < 2) return [];
+            const headers = lines[0].split(',').map(h => h.trim());
+            return lines.slice(1).map(line => {
+                const values = line.split(',').map(v => v.trim());
+                return headers.reduce((obj, header, index) => {
+                    obj[header] = values[index] || '';
+                    return obj;
+                }, {});
+            });
+        }
+
+        async function init() {
+            studentsData = await fetchCSV('students.csv');
+            coursesData = await fetchCSV('courses.csv');
+            const enrollments = await fetchCSV('enrollments.csv');
+
+            // Update Statistics
+            document.getElementById('total-students').textContent = studentsData.length;
+            document.getElementById('total-courses').textContent = coursesData.length;
+            document.getElementById('total-active').textContent = enrollments.length || studentsData.length;
+
+            renderTable();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('searchInput').value = '';
+            renderTable();
+        }
+
+        function renderTable(dataToRender = null) {
+            const thead = document.getElementById('table-head');
+            const tbody = document.getElementById('table-body');
+            const data = dataToRender || (currentTab === 'students' ? studentsData : coursesData);
+
+            tbody.innerHTML = '';
+
+            if (currentTab === 'students') {
+                thead.innerHTML = `
+                    <tr>
+                        <th>معرف الطالب</th>
+                        <th>الاسم</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الإجراءات (UI)</th>
+                    </tr>`;
+                
+                data.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${item.student_id || item.id || '-'}</td>
+                        <td>${item.name || item.full_name || '-'}</td>
+                        <td>${item.email || '-'}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="openModal('edit', ${index})">تعديل</button>
+                            <button class="btn btn-delete" onclick="deleteItem(${index})">حذف</button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                thead.innerHTML = `
+                    <tr>
+                        <th>كود المادة</th>
+                        <th>اسم المادة</th>
+                        <th>الساعات المعتمده</th>
+                        <th>الإجراءات (UI)</th>
+                    </tr>`;
+                
+                data.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${item.course_id || item.id || '-'}</td>
+                        <td>${item.title || item.course_name || item.name || '-'}</td>
+                        <td>${item.credits || item.hours || '3'}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="openModal('edit', ${index})">تعديل</button>
+                            <button class="btn btn-delete" onclick="deleteItem(${index})">حذف</button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function filterData() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const source = currentTab === 'students' ? studentsData : coursesData;
+            
+            const filtered = source.filter(item => 
+                Object.values(item).some(val => val.toLowerCase().includes(term))
+            );
+            renderTable(filtered);
+        }
+
+        function openModal(mode, index = null) {
+            const modal = document.getElementById('dataModal');
+            const title = document.getElementById('modalTitle');
+            const inputs = document.getElementById('modalInputs');
+            activeEditIndex = index;
+
+            modal.style.display = 'flex';
+            if(mode === 'add') {
+                title.textContent = currentTab === 'students' ? 'إضافة طالب جديد' : 'إضافة كورس جديد';
+                inputs.innerHTML = currentTab === 'students' ? 
+                    `<div class="form-group"><label>الكود</label><input id="inp1"></div>
+                     <div class="form-group"><label>الاسم</label><input id="inp2"></div>
+                     <div class="form-group"><label>الإيميل</label><input id="inp3"></div>` :
+                    `<div class="form-group"><label>كود المادة</label><input id="inp1"></div>
+                     <div class="form-group"><label>اسم المادة</label><input id="inp2"></div>`;
+            } else {
+                title.textContent = 'تعديل البيانات';
+                const item = (currentTab === 'students' ? studentsData : coursesData)[index];
+                inputs.innerHTML = currentTab === 'students' ? 
+                    `<div class="form-group"><label>الكود</label><input id="inp1" value="${item.student_id||''}"></div>
+                     <div class="form-group"><label>الاسم</label><input id="inp2" value="${item.name||''}"></div>
+                     <div class="form-group"><label>الإيميل</label><input id="inp3" value="${item.email||''}"></div>` :
+                    `<div class="form-group"><label>كود المادة</label><input id="inp1" value="${item.course_id||''}"></div>
+                     <div class="form-group"><label>اسم المادة</label><input id="inp2" value="${item.title||''}"></div>`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('dataModal').style.display = 'none';
+        }
+
+        function saveItem() {
+            const val1 = document.getElementById('inp1').value;
+            const val2 = document.getElementById('inp2').value;
+            
+            if (currentTab === 'students') {
+                const val3 = document.getElementById('inp3')?.value || '';
+                const obj = { student_id: val1, name: val2, email: val3 };
+                if (activeEditIndex === null) studentsData.unshift(obj);
+                else studentsData[activeEditIndex] = obj;
+            } else {
+                const obj = { course_id: val1, title: val2 };
+                if (activeEditIndex === null) coursesData.unshift(obj);
+                else coursesData[activeEditIndex] = obj;
+            }
+
+            closeModal();
+            renderTable();
+        }
+
+        function deleteItem(index) {
+            if(confirm('هل أنت متاكد من الحذف')) {
+                if (currentTab === 'students') studentsData.splice(index, 1);
+                else coursesData.splice(index, 1);
+                renderTable();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
