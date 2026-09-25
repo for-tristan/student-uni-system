@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../theme/app_theme.dart';
 import '../widgets/primitives.dart';
+import 'login_screen.dart'; // للوصول لـ currentLoggedInEmail
 
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -45,23 +46,61 @@ class _CoursesScreenState extends State<CoursesScreen> {
     }
   }
 
-  // دالة لتسجيل الطالب في الكورس وزيادة العداد في Supabase
-  Future<void> _enrollInCourse(BuildContext context, dynamic courseId, int currentCount) async {
+  // دالة لتسجيل الطالب في جدول enrollments وربطه بالكورس بـ Supabase
+  Future<void> _enrollInCourse(BuildContext context, dynamic courseId) async {
     try {
-      await _supabase
-          .from('courses')
-          .update({'enrolled_students_count': currentCount + 1})
-          .eq('course_id', courseId);
+      final email = currentLoggedInEmail;
+      if (email == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please sign in first!'), backgroundColor: Colors.red),
+        );
+        return;
+      }
+
+      // 1. جلب الـ user_id أو id الخاص بالطالب الحالي من جدول users
+      final userRes = await _supabase
+          .from('users')
+          .select('id')
+          .eq('email', email)
+          .maybeSingle();
+
+      if (userRes == null) {
+        throw Exception('User record not found in database.');
+      }
+
+      final studentId = userRes['id'];
+
+      // 2. التحقق مما إذا كان الطالب مسجلاً مسبقاً في هذا الكورس
+      final existingEnrollment = await _supabase
+          .from('enrollments')
+          .select()
+          .eq('course_id', courseId)
+          .eq('student_id', studentId)
+          .maybeSingle();
+
+      if (existingEnrollment != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('You are already enrolled in this course!'), backgroundColor: Colors.orange),
+        );
+        return;
+      }
+
+      // 3. إضافة سجل جديد في جدول enrollments
+      await _supabase.from('enrollments').insert({
+        'course_id': courseId,
+        'student_id': studentId,
+      });
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Enrolled successfully! Student count updated.'),
+          content: Text('Enrolled successfully! Admin can now see your enrollment.'),
           backgroundColor: Colors.green,
         ),
       );
 
-      _fetchCourses(); // تحديث القائمة لإظهار العداد الجديد
+      _fetchCourses(); // تحديث القائمة
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -146,8 +185,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     course: course,
                     onEnroll: () {
                       final courseId = course['course_id'];
-                      final currentCount = course['enrolled_students_count'] ?? 0;
-                      _enrollInCourse(context, courseId, currentCount);
+                      _enrollInCourse(context, courseId);
                     },
                   )),
               ],
@@ -245,7 +283,7 @@ class _CourseRow extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87, // لون غامق وواضح على الخلفية الفاتحة
+                            color: Colors.black87,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -257,14 +295,14 @@ class _CourseRow extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Colors.blue, // لون أزرق واضح للمحاضر
+                      color: Colors.blue,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text('Hours: $hours  |  Price: \$$price  |  Enrolled: $enrolledCount',
                     style: const TextStyle(
                       fontSize: 11,
-                      color: Colors.black54, // لون رمادي غامق وواضح للتفاصيل
+                      color: Colors.black54,
                     ),
                   ),
                 ],
