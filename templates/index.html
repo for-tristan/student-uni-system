@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>المساعد الجامعي الذكي</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="chat-container">
+
+        <!-- Header -->
+        <header class="chat-header">
+            <div class="logo">🎓</div>
+
+            <div class="header-info">
+                <h1>المساعد الجامعي الذكي</h1>
+                <p>اسأل عن لوائح الجامعة والمقررات والتخرج</p>
+            </div>
+
+            <span class="status">● متصل</span>
+        </header>
+
+        <!-- Chat Messages -->
+        <main class="chat-messages" id="chatMessages">
+
+            <div class="message bot-message">
+                <div class="avatar">🎓</div>
+
+                <div class="message-content">
+                    <p>
+                        أهلًا بيك! 👋
+                    </p>
+
+                    <p>
+                        أنا المساعد الجامعي الذكي.
+                        أقدر أساعدك في معرفة لوائح الجامعة،
+                        وقواعد الامتحانات والتسجيل وشروط التخرج.
+                    </p>
+
+                    <p>
+                        اسألني أي سؤال متعلق بالجامعة.
+                    </p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Input Area -->
+        <footer class="chat-input-area">
+
+            <form id="chatForm">
+
+                <input type="text" id="userInput" placeholder="اكتب سؤالك هنا..." autocomplete="off" required>
+
+                <button type="submit" id="sendButton">
+                    إرسال
+                </button>
+
+            </form>
+
+            <p class="footer-note">
+                المساعد مخصص للإجابة عن أسئلة الجامعة فقط.
+            </p>
+
+        </footer>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
